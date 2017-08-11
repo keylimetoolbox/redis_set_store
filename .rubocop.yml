@@ -1,0 +1,25 @@
+Documentation:
+  Exclude:
+    - "**/railtie.rb"
+    - "spec/**/*"
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Metrics/LineLength:
+  Max: 120
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
+Metrics/BlockLength:
+  Exclude:
+    - "redis_set_store.gemspec"
+    - "spec/**/*"
+
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - "spec/**/*"

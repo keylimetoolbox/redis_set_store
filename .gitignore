@@ -11,8 +11,19 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+.rspec_status
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+# Bundler artifacts
+/Gemfile.lock
+/coverage/
+/doc/
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log

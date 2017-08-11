@@ -151,7 +151,7 @@ and follow the instructions.
 
 ### Running tests
 
-```ruby
+```shell
 bin/setup
 bundle exec rake
 ```

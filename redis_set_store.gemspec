@@ -28,12 +28,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "mocha", "~> 1"
   spec.add_development_dependency "appraisal", "~> 2.0"
-  spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "bundler-audit"
+  spec.add_development_dependency "rubocop", "~> 0"
+  spec.add_development_dependency "bundler-audit", "~> 0"
 
   spec.add_dependency "activesupport", ">= 4.2"
   spec.add_dependency "railties", ">= 4.2"
-  spec.add_dependency "redis-rails", ">= 3.0"
+  spec.add_dependency "redis-rails", "~> 5.0"
   spec.add_dependency "redis", "~> 3.0"
   spec.add_dependency "redis-store", "~> 1.1"
 end

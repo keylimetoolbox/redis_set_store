@@ -2,10 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "rails", "4.2.2"
+gem "rails", "4.2.9"
 
-source "https://UoiUhQri1scatsrnr8ZH@gem.fury.io/me/" do
-  gem "blueprint-dimdate"
-end
-
-gemspec :path => "../"
+gemspec path: "../"

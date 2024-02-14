@@ -15,6 +15,6 @@ module RedisSetStore
 end
 
 unless defined? Rails
-  RedisSetStore.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  RedisSetStore.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
   RedisSetStore.cache  = ActiveSupport::Cache::RedisSetStore.new(/\A[^:]+:\d+/)
 end

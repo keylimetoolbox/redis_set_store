@@ -2,11 +2,11 @@
 
 module RedisSetStore
   class Railtie < Rails::Railtie
-    initializer "Blueprint::Cache logger" do
+    initializer 'Blueprint::Cache logger' do
       RedisSetStore.logger = Rails.logger
     end
 
-    initializer "Blueprint::Cache cache" do
+    initializer 'Blueprint::Cache cache' do
       RedisSetStore.cache = Rails.cache
     end
   end

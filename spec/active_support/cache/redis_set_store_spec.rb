@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 RSpec.describe ActiveSupport::Cache::RedisSetStore do
-
   class SetOwner
     def initialize(id)
       @id = id
@@ -24,10 +23,8 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
   let(:owner_key_with_special_meaning_chars) { "#{owner.set_identifier}:key:L#{special_meaning_character} Breakfast" }
   let(:other_owner_key1) { "#{other_owner.set_identifier}:key:1" }
 
-  shared_examples_for "matched" do
-
-    context "matcher converts wildcards to regexp" do
-
+  shared_examples_for 'matched' do
+    context 'matcher converts wildcards to regexp' do
       before do
         RedisSetStore.cache.write(owner_key1, 1)
         RedisSetStore.cache.write(owner_key2, 2)
@@ -40,22 +37,20 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
         expect(result).to match_array [owner_key1, owner_key2, owner_key_with_special_meaning_chars]
       end
 
-      it "returns only matching keys of the set owner when additionally filtered" do
+      it 'returns only matching keys of the set owner when additionally filtered' do
         result = RedisSetStore.cache.matched("#{owner.set_identifier}*:2")
         expect(result).to match_array [owner_key2]
       end
 
-      it "returns only matching keys of the set owner when additionally filtered with special meaning chars" do
+      it 'returns only matching keys of the set owner when additionally filtered with special meaning chars' do
         result = RedisSetStore.cache.matched("#{owner.set_identifier}*:L#{special_meaning_character} Breakfast")
         expect(result).to match_array [owner_key_with_special_meaning_chars]
       end
     end
   end
 
-  shared_examples_for "delete_matched" do
-
-    context "convert wildcards to regexp" do
-
+  shared_examples_for 'delete_matched' do
+    context 'convert wildcards to regexp' do
       before do
         RedisSetStore.cache.write(owner_key1, 1)
         RedisSetStore.cache.write(owner_key2, 2)
@@ -64,12 +59,11 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       end
 
       context "when owner's set identifier is suffixed with a wildcard" do
-
         before do
           RedisSetStore.cache.delete_matched("#{owner.set_identifier}*")
         end
 
-        it "removes all the keys from the owner set" do
+        it 'removes all the keys from the owner set' do
           expect(redis_set_store.smembers(owner.set_identifier).count).to eq 0
         end
 
@@ -89,12 +83,11 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       end
 
       context "when owner's set identifier is further filtered with a special meaning character" do
-
         before do
           RedisSetStore.cache.delete_matched("#{owner.set_identifier}*:L#{special_meaning_character} Breakfast")
         end
 
-        it "removes matching keys from the owner set" do
+        it 'removes matching keys from the owner set' do
           expect(redis_set_store.smembers(owner.set_identifier).count).to eq 2
           expect(redis_set_store.smembers(owner.set_identifier)).to match_array [owner_key1, owner_key2]
         end
@@ -115,12 +108,11 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       end
 
       context "when owner's set identifier is further filtered" do
-
         before do
           RedisSetStore.cache.delete_matched("#{owner.set_identifier}*:2")
         end
 
-        it "removes matching keys from the owner set" do
+        it 'removes matching keys from the owner set' do
           expected = [owner_key1, owner_key_with_special_meaning_chars]
           expect(redis_set_store.smembers(owner.set_identifier).count).to eq 2
           expect(redis_set_store.smembers(owner.set_identifier)).to match_array expected
@@ -143,50 +135,47 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
     end
   end
 
-  shared_examples_for "cache owner store" do
-
+  shared_examples_for 'cache owner store' do
     after do
       redis_set_store.flushdb
     end
 
-    context "write_entry" do
-
+    context 'write_entry' do
       before do
         RedisSetStore.cache.write(key, 7)
       end
 
-      it "adds the key to a set for the owner" do
+      it 'adds the key to a set for the owner' do
         expect(redis_set_store.smembers(owner.set_identifier)).to include key
       end
 
-      it "writes the key and value to the cache" do
+      it 'writes the key and value to the cache' do
         expect(RedisSetStore.cache.read(key)).to eq 7
       end
 
       # Not sure this is needed, as it's testing Redis set behavior
-      it "behaves as a Redis set.  Duplicate keys are NOT created" do
+      it 'behaves as a Redis set.  Duplicate keys are NOT created' do
         RedisSetStore.cache.write(key, 5)
         expect(redis_set_store.smembers(owner.set_identifier).count).to eq 1
         expect(redis_set_store.smembers(owner.set_identifier)).to match_array [key]
       end
 
       it "prevents writing a key with the character '*' (not-supported by the matching algorithm)" do
-        expect { RedisSetStore.cache.write("some * key", 5) }.to raise_error ArgumentError
+        expect { RedisSetStore.cache.write('some * key', 5) }.to raise_error ArgumentError
       end
     end
 
-    context "delete_entry" do
-
+    context 'delete_entry' do
       before do
         RedisSetStore.cache.write(key, 7)
         RedisSetStore.cache.delete(key)
       end
 
-      it "removes the key from the set for the owner" do
+      it 'removes the key from the set for the owner' do
         expect(redis_set_store.smembers(owner.set_identifier).count).to eq 0
       end
 
-      it "removes the key from the cache" do
+      it 'removes the key from the cache' do
         expect(RedisSetStore.cache.read(key)).to be_nil
       end
 
@@ -196,23 +185,22 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       end
     end
 
-    [".", ")", "(", "/", "^", "$", "|", "?", "{", "}", "[", "]", " +"].each do |char|
+    ['.', ')', '(', '/', '^', '$', '|', '?', '{', '}', '[', ']', ' +'].each do |char|
       context "matching special meaning character #{char}" do
         let(:special_meaning_character) { char }
-        include_examples "matched"
-        include_examples "delete_matched"
+        include_examples 'matched'
+        include_examples 'delete_matched'
       end
     end
-
   end
 
-  context "when the Redis sets are managed in the same store as the rest of the cache" do
+  context 'when the Redis sets are managed in the same store as the rest of the cache' do
     let(:redis_set_store) { RedisSetStore.cache.redis }
 
-    include_examples "cache owner store"
+    include_examples 'cache owner store'
   end
 
-  context "when the Redis sets are managed in a separate store" do
+  context 'when the Redis sets are managed in a separate store' do
     let(:redis_set_store) { Redis.new(db: 14) }
 
     before do
@@ -223,11 +211,10 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       ActiveSupport::Cache::RedisSetStore::SetOwner.send(:remove_const, :STORE)
     end
 
-    include_examples "cache owner store"
+    include_examples 'cache owner store'
 
-    context "ping" do
-
-      it "calls ping on the RedisSetStore cache Redis instance and the Redis Set Store instance" do
+    context 'ping' do
+      it 'calls ping on the RedisSetStore cache Redis instance and the Redis Set Store instance' do
         redis_set_store.expects(:ping)
         RedisSetStore.cache.redis.expects(:ping)
         RedisSetStore.cache.ping

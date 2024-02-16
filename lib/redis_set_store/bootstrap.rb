@@ -58,6 +58,7 @@ module RedisSetStore
     def bootstrap_set(prefix)
       keys = @source.keys "#{prefix}:*"
       return if keys.empty?
+
       set_manager.sadd(prefix, keys)
     end
 

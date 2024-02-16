@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "redis_set_store/version"
 
@@ -22,18 +22,19 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
+  spec.required_ruby_version = ">= 3.2"
 
   spec.add_development_dependency "appraisal", "~> 2.0"
-  spec.add_development_dependency "bundler", "~> 1.15"
-  spec.add_development_dependency "bundler-audit", "~> 0"
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "bundler-audit", "~> 0.6"
   spec.add_development_dependency "mocha", "~> 1"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop", "~> 0.52"
+  spec.add_development_dependency "rake", "~> 12.0"
+  spec.add_development_dependency "rspec", "~> 3.6"
+  spec.add_development_dependency "rubocop", "~> 1.26"
 
-  spec.add_dependency "activesupport", ">= 4.2"
+  spec.add_dependency "activesupport", ">= 5.0"
   spec.add_dependency "railties", ">= 4.2"
-  spec.add_dependency "redis", "~> 3.0"
-  spec.add_dependency "redis-rails", "~> 5.0"
-  spec.add_dependency "redis-store", "~> 1.4"
+  spec.add_dependency "redis", "~> 5.1"
+  spec.add_dependency "redis-rails", "~> 5.0.2"
+  spec.add_dependency "redis-store", "~> 1.10"
 end

@@ -20,6 +20,7 @@ doc/
 
 # Bundler artifacts
 /Gemfile.lock
+gemfiles/*.lock
 /coverage/
 /doc/
 *.bundle

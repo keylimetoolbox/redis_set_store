@@ -196,7 +196,7 @@ RSpec.describe ActiveSupport::Cache::RedisSetStore do
       end
     end
 
-    %w[. ) ( / ^ $ | ? { } [ ] \ +].each do |char|
+    [".", ")", "(", "/", "^", "$", "|", "?", "{", "}", "[", "]", " +"].each do |char|
       context "matching special meaning character #{char}" do
         let(:special_meaning_character) { char }
         include_examples "matched"

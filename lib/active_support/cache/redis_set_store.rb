@@ -85,7 +85,7 @@ module ActiveSupport
       #
       # Returns "PONG" on success.
       def ping
-        SetOwner::STORE&.ping if defined?(SetOwner::STORE)
+        SetOwner::STORE.ping if defined?(SetOwner::STORE)
         redis.ping
       end
 
@@ -113,7 +113,7 @@ module ActiveSupport
       def delete_entry(key, options)
         SetOwner.new(@set_owner_regexp, key, @data).srem
 
-        super
+        super(key, **options)
       rescue Errno::ECONNREFUSED
         false
       end
@@ -132,11 +132,13 @@ module ActiveSupport
 
         def sadd
           return unless @set && @key
+
           @redis_set_store.sadd(@set, @key)
         end
 
         def srem
           return unless @set && @key
+
           @redis_set_store.srem(@set, @key)
         end
 
@@ -152,6 +154,7 @@ module ActiveSupport
 
         def matched
           return unless @set && @key
+
           matcher_regexp = Regexp.compile(convert_wildcards_to_regex)
           @redis_set_store.smembers(@set).select { |smember| matcher_regexp.match(smember) }
         end

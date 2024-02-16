@@ -99,8 +99,8 @@ module ActiveSupport
       protected
 
       def write_entry(key, entry, options)
-        if key.include?("*")
-          raise ArgumentError.new("Unsupported Redis key character for ActiveSupport::Cache::RedisSetStore: *")
+        if key.include?('*')
+          raise ArgumentError, 'Unsupported Redis key character for ActiveSupport::Cache::RedisSetStore: *'
         end
 
         SetOwner.new(@set_owner_regexp, key, @data).sadd
@@ -163,8 +163,8 @@ module ActiveSupport
         # All other special characters are normally-escaped.
         def convert_wildcards_to_regex
           key = Regexp.escape(@key.to_s)
-          key = key.to_s.gsub("\\*", ".*")
-          key << "$"
+          key = key.to_s.gsub('\\*', '.*')
+          key << '$'
         end
       end
     end

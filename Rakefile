@@ -21,3 +21,22 @@ if !ENV['APPRAISAL_INITIALIZED'] && !ENV['TRAVIS']
 else
   task default: :spec
 end
+
+desc "Push redis_set_store-#{RedisSetStore::VERSION}.gem to Gemfury.com"
+task :gemfury do
+  package = "pkg/redis_set_store-#{RedisSetStore::VERSION}.gem"
+  if File.exist? package
+    system "fury push #{package} --as keylimetoolbox"
+  else
+    warn "E: gem '#{package}' not found."
+    exit 1
+  end
+end
+
+# Don't push changes to rubygems with `gem push`, because we use gemfury
+ENV['gem_push'] = 'no'
+
+desc 'Release to Gemfury'
+task :release do
+  Rake::Task[:gemfury].invoke
+end

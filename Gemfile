@@ -9,7 +9,6 @@ group :development do
   gem 'appraisal', '~> 2.0'
   gem 'bundler', '~> 2.0'
   gem 'bundler-audit', '~> 0.6'
-  gem 'gemfury', '~> 0'
   gem 'mocha', '~> 1'
   gem 'rake', '~> 12.0'
   gem 'rspec', '~> 3.6'

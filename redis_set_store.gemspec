@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '>= 5.0'
   spec.add_dependency 'railties', '>= 4.2'
   spec.add_dependency 'redis', '~> 5.1'
-  spec.add_dependency 'redis-rails', '~> 5.0.2'
-  spec.add_dependency 'redis-store', '~> 1.10'
+  spec.add_dependency 'redis-activesupport', '~> 5.3'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
